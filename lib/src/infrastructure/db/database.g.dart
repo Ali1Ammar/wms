@@ -27,25 +27,30 @@ class $ProductModelTable extends ProductModel
       const VerificationMeta('basePrice');
   @override
   late final GeneratedColumn<int> basePrice = GeneratedColumn<int>(
-      'base_price', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _stockMeta = const VerificationMeta('stock');
+      'base_price', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _quantityMeta =
+      const VerificationMeta('quantity');
   @override
-  late final GeneratedColumn<int> stock = GeneratedColumn<int>(
-      'stock', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+  late final GeneratedColumn<int> quantity = GeneratedColumn<int>(
+      'quantity', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
   static const VerificationMeta _createdAtMeta =
       const VerificationMeta('createdAt');
   @override
   late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
       'created_at', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
   static const VerificationMeta _updatedAtMeta =
       const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
   static const VerificationMeta _deletedAtMeta =
       const VerificationMeta('deletedAt');
   @override
@@ -54,7 +59,7 @@ class $ProductModelTable extends ProductModel
       type: DriftSqlType.dateTime, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, name, basePrice, stock, createdAt, updatedAt, deletedAt];
+      [id, name, basePrice, quantity, createdAt, updatedAt, deletedAt];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -77,22 +82,22 @@ class $ProductModelTable extends ProductModel
     if (data.containsKey('base_price')) {
       context.handle(_basePriceMeta,
           basePrice.isAcceptableOrUnknown(data['base_price']!, _basePriceMeta));
+    } else if (isInserting) {
+      context.missing(_basePriceMeta);
     }
-    if (data.containsKey('stock')) {
-      context.handle(
-          _stockMeta, stock.isAcceptableOrUnknown(data['stock']!, _stockMeta));
+    if (data.containsKey('quantity')) {
+      context.handle(_quantityMeta,
+          quantity.isAcceptableOrUnknown(data['quantity']!, _quantityMeta));
+    } else if (isInserting) {
+      context.missing(_quantityMeta);
     }
     if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
           createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
-    } else if (isInserting) {
-      context.missing(_createdAtMeta);
     }
     if (data.containsKey('updated_at')) {
       context.handle(_updatedAtMeta,
           updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
-    } else if (isInserting) {
-      context.missing(_updatedAtMeta);
     }
     if (data.containsKey('deleted_at')) {
       context.handle(_deletedAtMeta,
@@ -112,9 +117,9 @@ class $ProductModelTable extends ProductModel
       name: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
       basePrice: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}base_price']),
-      stock: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}stock']),
+          .read(DriftSqlType.int, data['${effectivePrefix}base_price'])!,
+      quantity: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}quantity'])!,
       createdAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
       updatedAt: attachedDatabase.typeMapping
@@ -134,16 +139,16 @@ class ProductModelData extends DataClass
     implements Insertable<ProductModelData> {
   final int id;
   final String name;
-  final int? basePrice;
-  final int? stock;
+  final int basePrice;
+  final int quantity;
   final DateTime createdAt;
   final DateTime updatedAt;
   final DateTime? deletedAt;
   const ProductModelData(
       {required this.id,
       required this.name,
-      this.basePrice,
-      this.stock,
+      required this.basePrice,
+      required this.quantity,
       required this.createdAt,
       required this.updatedAt,
       this.deletedAt});
@@ -152,12 +157,8 @@ class ProductModelData extends DataClass
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
-    if (!nullToAbsent || basePrice != null) {
-      map['base_price'] = Variable<int>(basePrice);
-    }
-    if (!nullToAbsent || stock != null) {
-      map['stock'] = Variable<int>(stock);
-    }
+    map['base_price'] = Variable<int>(basePrice);
+    map['quantity'] = Variable<int>(quantity);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
     if (!nullToAbsent || deletedAt != null) {
@@ -170,11 +171,8 @@ class ProductModelData extends DataClass
     return ProductModelCompanion(
       id: Value(id),
       name: Value(name),
-      basePrice: basePrice == null && nullToAbsent
-          ? const Value.absent()
-          : Value(basePrice),
-      stock:
-          stock == null && nullToAbsent ? const Value.absent() : Value(stock),
+      basePrice: Value(basePrice),
+      quantity: Value(quantity),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
       deletedAt: deletedAt == null && nullToAbsent
@@ -189,8 +187,8 @@ class ProductModelData extends DataClass
     return ProductModelData(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
-      basePrice: serializer.fromJson<int?>(json['basePrice']),
-      stock: serializer.fromJson<int?>(json['stock']),
+      basePrice: serializer.fromJson<int>(json['basePrice']),
+      quantity: serializer.fromJson<int>(json['quantity']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
@@ -202,8 +200,8 @@ class ProductModelData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
-      'basePrice': serializer.toJson<int?>(basePrice),
-      'stock': serializer.toJson<int?>(stock),
+      'basePrice': serializer.toJson<int>(basePrice),
+      'quantity': serializer.toJson<int>(quantity),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
@@ -213,16 +211,16 @@ class ProductModelData extends DataClass
   ProductModelData copyWith(
           {int? id,
           String? name,
-          Value<int?> basePrice = const Value.absent(),
-          Value<int?> stock = const Value.absent(),
+          int? basePrice,
+          int? quantity,
           DateTime? createdAt,
           DateTime? updatedAt,
           Value<DateTime?> deletedAt = const Value.absent()}) =>
       ProductModelData(
         id: id ?? this.id,
         name: name ?? this.name,
-        basePrice: basePrice.present ? basePrice.value : this.basePrice,
-        stock: stock.present ? stock.value : this.stock,
+        basePrice: basePrice ?? this.basePrice,
+        quantity: quantity ?? this.quantity,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
@@ -233,7 +231,7 @@ class ProductModelData extends DataClass
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('basePrice: $basePrice, ')
-          ..write('stock: $stock, ')
+          ..write('quantity: $quantity, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt')
@@ -242,8 +240,8 @@ class ProductModelData extends DataClass
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, name, basePrice, stock, createdAt, updatedAt, deletedAt);
+  int get hashCode => Object.hash(
+      id, name, basePrice, quantity, createdAt, updatedAt, deletedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -251,7 +249,7 @@ class ProductModelData extends DataClass
           other.id == this.id &&
           other.name == this.name &&
           other.basePrice == this.basePrice &&
-          other.stock == this.stock &&
+          other.quantity == this.quantity &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
           other.deletedAt == this.deletedAt);
@@ -260,8 +258,8 @@ class ProductModelData extends DataClass
 class ProductModelCompanion extends UpdateCompanion<ProductModelData> {
   final Value<int> id;
   final Value<String> name;
-  final Value<int?> basePrice;
-  final Value<int?> stock;
+  final Value<int> basePrice;
+  final Value<int> quantity;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   final Value<DateTime?> deletedAt;
@@ -269,7 +267,7 @@ class ProductModelCompanion extends UpdateCompanion<ProductModelData> {
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.basePrice = const Value.absent(),
-    this.stock = const Value.absent(),
+    this.quantity = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
@@ -277,19 +275,19 @@ class ProductModelCompanion extends UpdateCompanion<ProductModelData> {
   ProductModelCompanion.insert({
     this.id = const Value.absent(),
     required String name,
-    this.basePrice = const Value.absent(),
-    this.stock = const Value.absent(),
-    required DateTime createdAt,
-    required DateTime updatedAt,
+    required int basePrice,
+    required int quantity,
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
   })  : name = Value(name),
-        createdAt = Value(createdAt),
-        updatedAt = Value(updatedAt);
+        basePrice = Value(basePrice),
+        quantity = Value(quantity);
   static Insertable<ProductModelData> custom({
     Expression<int>? id,
     Expression<String>? name,
     Expression<int>? basePrice,
-    Expression<int>? stock,
+    Expression<int>? quantity,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
     Expression<DateTime>? deletedAt,
@@ -298,7 +296,7 @@ class ProductModelCompanion extends UpdateCompanion<ProductModelData> {
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (basePrice != null) 'base_price': basePrice,
-      if (stock != null) 'stock': stock,
+      if (quantity != null) 'quantity': quantity,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (deletedAt != null) 'deleted_at': deletedAt,
@@ -308,8 +306,8 @@ class ProductModelCompanion extends UpdateCompanion<ProductModelData> {
   ProductModelCompanion copyWith(
       {Value<int>? id,
       Value<String>? name,
-      Value<int?>? basePrice,
-      Value<int?>? stock,
+      Value<int>? basePrice,
+      Value<int>? quantity,
       Value<DateTime>? createdAt,
       Value<DateTime>? updatedAt,
       Value<DateTime?>? deletedAt}) {
@@ -317,7 +315,7 @@ class ProductModelCompanion extends UpdateCompanion<ProductModelData> {
       id: id ?? this.id,
       name: name ?? this.name,
       basePrice: basePrice ?? this.basePrice,
-      stock: stock ?? this.stock,
+      quantity: quantity ?? this.quantity,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
@@ -336,8 +334,8 @@ class ProductModelCompanion extends UpdateCompanion<ProductModelData> {
     if (basePrice.present) {
       map['base_price'] = Variable<int>(basePrice.value);
     }
-    if (stock.present) {
-      map['stock'] = Variable<int>(stock.value);
+    if (quantity.present) {
+      map['quantity'] = Variable<int>(quantity.value);
     }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
@@ -357,7 +355,7 @@ class ProductModelCompanion extends UpdateCompanion<ProductModelData> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('basePrice: $basePrice, ')
-          ..write('stock: $stock, ')
+          ..write('quantity: $quantity, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt')
@@ -386,7 +384,10 @@ class $TransactionModelTable extends TransactionModel
   @override
   late final GeneratedColumn<int> productId = GeneratedColumn<int>(
       'product_id', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES product_model (id)'));
   static const VerificationMeta _quantityMeta =
       const VerificationMeta('quantity');
   @override
@@ -403,13 +404,9 @@ class $TransactionModelTable extends TransactionModel
   @override
   late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
       'created_at', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
-  static const VerificationMeta _updatedAtMeta =
-      const VerificationMeta('updatedAt');
-  @override
-  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
-      'updated_at', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
   static const VerificationMeta _deletedAtMeta =
       const VerificationMeta('deletedAt');
   @override
@@ -418,7 +415,7 @@ class $TransactionModelTable extends TransactionModel
       type: DriftSqlType.dateTime, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, productId, quantity, price, createdAt, updatedAt, deletedAt];
+      [id, productId, quantity, price, createdAt, deletedAt];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -454,14 +451,6 @@ class $TransactionModelTable extends TransactionModel
     if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
           createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
-    } else if (isInserting) {
-      context.missing(_createdAtMeta);
-    }
-    if (data.containsKey('updated_at')) {
-      context.handle(_updatedAtMeta,
-          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
-    } else if (isInserting) {
-      context.missing(_updatedAtMeta);
     }
     if (data.containsKey('deleted_at')) {
       context.handle(_deletedAtMeta,
@@ -486,8 +475,6 @@ class $TransactionModelTable extends TransactionModel
           .read(DriftSqlType.int, data['${effectivePrefix}price'])!,
       createdAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
-      updatedAt: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
       deletedAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}deleted_at']),
     );
@@ -506,7 +493,6 @@ class TransactionModelData extends DataClass
   final int quantity;
   final int price;
   final DateTime createdAt;
-  final DateTime updatedAt;
   final DateTime? deletedAt;
   const TransactionModelData(
       {required this.id,
@@ -514,7 +500,6 @@ class TransactionModelData extends DataClass
       required this.quantity,
       required this.price,
       required this.createdAt,
-      required this.updatedAt,
       this.deletedAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -524,7 +509,6 @@ class TransactionModelData extends DataClass
     map['quantity'] = Variable<int>(quantity);
     map['price'] = Variable<int>(price);
     map['created_at'] = Variable<DateTime>(createdAt);
-    map['updated_at'] = Variable<DateTime>(updatedAt);
     if (!nullToAbsent || deletedAt != null) {
       map['deleted_at'] = Variable<DateTime>(deletedAt);
     }
@@ -538,7 +522,6 @@ class TransactionModelData extends DataClass
       quantity: Value(quantity),
       price: Value(price),
       createdAt: Value(createdAt),
-      updatedAt: Value(updatedAt),
       deletedAt: deletedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(deletedAt),
@@ -554,7 +537,6 @@ class TransactionModelData extends DataClass
       quantity: serializer.fromJson<int>(json['quantity']),
       price: serializer.fromJson<int>(json['price']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
-      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
     );
   }
@@ -567,7 +549,6 @@ class TransactionModelData extends DataClass
       'quantity': serializer.toJson<int>(quantity),
       'price': serializer.toJson<int>(price),
       'createdAt': serializer.toJson<DateTime>(createdAt),
-      'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
     };
   }
@@ -578,7 +559,6 @@ class TransactionModelData extends DataClass
           int? quantity,
           int? price,
           DateTime? createdAt,
-          DateTime? updatedAt,
           Value<DateTime?> deletedAt = const Value.absent()}) =>
       TransactionModelData(
         id: id ?? this.id,
@@ -586,7 +566,6 @@ class TransactionModelData extends DataClass
         quantity: quantity ?? this.quantity,
         price: price ?? this.price,
         createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
         deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
       );
   @override
@@ -597,15 +576,14 @@ class TransactionModelData extends DataClass
           ..write('quantity: $quantity, ')
           ..write('price: $price, ')
           ..write('createdAt: $createdAt, ')
-          ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, productId, quantity, price, createdAt, updatedAt, deletedAt);
+  int get hashCode =>
+      Object.hash(id, productId, quantity, price, createdAt, deletedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -615,7 +593,6 @@ class TransactionModelData extends DataClass
           other.quantity == this.quantity &&
           other.price == this.price &&
           other.createdAt == this.createdAt &&
-          other.updatedAt == this.updatedAt &&
           other.deletedAt == this.deletedAt);
 }
 
@@ -625,7 +602,6 @@ class TransactionModelCompanion extends UpdateCompanion<TransactionModelData> {
   final Value<int> quantity;
   final Value<int> price;
   final Value<DateTime> createdAt;
-  final Value<DateTime> updatedAt;
   final Value<DateTime?> deletedAt;
   const TransactionModelCompanion({
     this.id = const Value.absent(),
@@ -633,7 +609,6 @@ class TransactionModelCompanion extends UpdateCompanion<TransactionModelData> {
     this.quantity = const Value.absent(),
     this.price = const Value.absent(),
     this.createdAt = const Value.absent(),
-    this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
   });
   TransactionModelCompanion.insert({
@@ -641,21 +616,17 @@ class TransactionModelCompanion extends UpdateCompanion<TransactionModelData> {
     required int productId,
     required int quantity,
     required int price,
-    required DateTime createdAt,
-    required DateTime updatedAt,
+    this.createdAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
   })  : productId = Value(productId),
         quantity = Value(quantity),
-        price = Value(price),
-        createdAt = Value(createdAt),
-        updatedAt = Value(updatedAt);
+        price = Value(price);
   static Insertable<TransactionModelData> custom({
     Expression<int>? id,
     Expression<int>? productId,
     Expression<int>? quantity,
     Expression<int>? price,
     Expression<DateTime>? createdAt,
-    Expression<DateTime>? updatedAt,
     Expression<DateTime>? deletedAt,
   }) {
     return RawValuesInsertable({
@@ -664,7 +635,6 @@ class TransactionModelCompanion extends UpdateCompanion<TransactionModelData> {
       if (quantity != null) 'quantity': quantity,
       if (price != null) 'price': price,
       if (createdAt != null) 'created_at': createdAt,
-      if (updatedAt != null) 'updated_at': updatedAt,
       if (deletedAt != null) 'deleted_at': deletedAt,
     });
   }
@@ -675,7 +645,6 @@ class TransactionModelCompanion extends UpdateCompanion<TransactionModelData> {
       Value<int>? quantity,
       Value<int>? price,
       Value<DateTime>? createdAt,
-      Value<DateTime>? updatedAt,
       Value<DateTime?>? deletedAt}) {
     return TransactionModelCompanion(
       id: id ?? this.id,
@@ -683,7 +652,6 @@ class TransactionModelCompanion extends UpdateCompanion<TransactionModelData> {
       quantity: quantity ?? this.quantity,
       price: price ?? this.price,
       createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
     );
   }
@@ -706,9 +674,6 @@ class TransactionModelCompanion extends UpdateCompanion<TransactionModelData> {
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
-    if (updatedAt.present) {
-      map['updated_at'] = Variable<DateTime>(updatedAt.value);
-    }
     if (deletedAt.present) {
       map['deleted_at'] = Variable<DateTime>(deletedAt.value);
     }
@@ -723,7 +688,6 @@ class TransactionModelCompanion extends UpdateCompanion<TransactionModelData> {
           ..write('quantity: $quantity, ')
           ..write('price: $price, ')
           ..write('createdAt: $createdAt, ')
-          ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt')
           ..write(')'))
         .toString();
@@ -773,13 +737,17 @@ class $UserModelTable extends UserModel
   @override
   late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
       'created_at', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
   static const VerificationMeta _updatedAtMeta =
       const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
   static const VerificationMeta _deletedAtMeta =
       const VerificationMeta('deletedAt');
   @override
@@ -824,14 +792,10 @@ class $UserModelTable extends UserModel
     if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
           createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
-    } else if (isInserting) {
-      context.missing(_createdAtMeta);
     }
     if (data.containsKey('updated_at')) {
       context.handle(_updatedAtMeta,
           updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
-    } else if (isInserting) {
-      context.missing(_updatedAtMeta);
     }
     if (data.containsKey('deleted_at')) {
       context.handle(_deletedAtMeta,
@@ -1033,15 +997,13 @@ class UserModelCompanion extends UpdateCompanion<UserModelData> {
     required String userName,
     required String password,
     required Role role,
-    required DateTime createdAt,
-    required DateTime updatedAt,
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
   })  : name = Value(name),
         userName = Value(userName),
         password = Value(password),
-        role = Value(role),
-        createdAt = Value(createdAt),
-        updatedAt = Value(updatedAt);
+        role = Value(role);
   static Insertable<UserModelData> custom({
     Expression<int>? id,
     Expression<String>? name,
@@ -1139,6 +1101,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $TransactionModelTable transactionModel =
       $TransactionModelTable(this);
   late final $UserModelTable userModel = $UserModelTable(this);
+  late final DriftProductRepo driftProductRepo =
+      DriftProductRepo(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
