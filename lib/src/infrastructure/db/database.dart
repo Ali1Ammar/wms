@@ -23,8 +23,12 @@ class AppDatabase extends _$AppDatabase {
 
 LazyDatabase openConnection() {
   return LazyDatabase(() async {
-    return NativeDatabase.createInBackground(await getDbFile());
+    return openDbInBackground();
   });
+}
+
+Future<QueryExecutor> openDbInBackground() async {
+  return NativeDatabase.createInBackground(await getDbFile());
 }
 
 Future<File> getDbFile() async {
