@@ -1,10 +1,7 @@
 import 'package:wms/src/domain/entities/entities.dart';
 import 'package:wms/src/infrastructure/db/database.dart';
 
-seed() async {
-  await deleteAll();
-  final db = AppDatabase(openConnection());
-
+Future<void> seed(AppDatabase db) async {
   // seed users
   await Future.wait([
     db.driftUserRepo.createUser(User(
@@ -85,7 +82,7 @@ seed() async {
   ]);
 }
 
-deleteAll() async {
+Future<void> deleteAll() async {
   final dbFile = await getDbFile();
   dbFile.deleteSync();
 }

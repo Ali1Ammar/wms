@@ -1,6 +1,8 @@
 import 'package:drift/drift.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wms/seed/seed.dart';
+import 'package:wms/src/core/provider/provider.dart';
 import 'package:wms/src/infrastructure/db/database.dart';
 
 final asyncInitProvider =
@@ -12,9 +14,11 @@ class AsyncInit {
   late final QueryExecutor queryExecutor;
 
   AsyncInit._();
-  static Future<AsyncInit> init() async {
+  static Future<AsyncInit> init(ProviderContainer ref) async {
     final object = AsyncInit._();
-
+    if (ref.read(envConfig).reSetDb) {
+      await deleteAll();
+    }
     await Future.wait([
       SharedPreferences.getInstance().then((value) {
         object.sharedPreferences = value;
@@ -23,6 +27,10 @@ class AsyncInit {
         object.queryExecutor = value;
       })
     ]);
+
+    if (ref.read(envConfig).reSetDb) {
+      await seed(AppDatabase(object.queryExecutor));
+    }
     return object;
   }
 }
