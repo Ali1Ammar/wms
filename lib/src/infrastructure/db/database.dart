@@ -7,9 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:wms/src/domain/entities/role.dart';
 import 'package:wms/src/infrastructure/db/models.dart';
-import 'package:wms/src/infrastructure/repo/product_repo.dart';
-import 'package:wms/src/infrastructure/repo/transaction_repo.dart';
-import 'package:wms/src/infrastructure/repo/user_repo.dart';
+import 'package:wms/src/infrastructure/repo/repo.dart';
 
 part 'database.g.dart';
 
