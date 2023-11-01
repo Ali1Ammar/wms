@@ -23,8 +23,12 @@ class AppDatabase extends _$AppDatabase {
 
 LazyDatabase openConnection() {
   return LazyDatabase(() async {
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'wms-db.sqlite'));
-    return NativeDatabase.createInBackground(file);
+    return NativeDatabase.createInBackground(await getDbFile());
   });
+}
+
+Future<File> getDbFile() async {
+  final dbFolder = await getApplicationDocumentsDirectory();
+  final file = File(p.join(dbFolder.path, 'wms-db.sqlite'));
+  return file;
 }
