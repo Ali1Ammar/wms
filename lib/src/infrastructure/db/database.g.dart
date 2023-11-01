@@ -1103,6 +1103,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $UserModelTable userModel = $UserModelTable(this);
   late final DriftProductRepo driftProductRepo =
       DriftProductRepo(this as AppDatabase);
+  late final DriftTransactionRepo driftTransactionRepo =
+      DriftTransactionRepo(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

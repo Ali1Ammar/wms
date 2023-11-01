@@ -8,12 +8,13 @@ import 'package:path/path.dart' as p;
 import 'package:wms/src/domain/entities/role.dart';
 import 'package:wms/src/infrastructure/db/models.dart';
 import 'package:wms/src/infrastructure/repo/product_repo.dart';
+import 'package:wms/src/infrastructure/repo/transaction_repo.dart';
 
 part 'database.g.dart';
 
 @DriftDatabase(
     tables: [ProductModel, TransactionModel, UserModel],
-    daos: [DriftProductRepo])
+    daos: [DriftProductRepo, DriftTransactionRepo])
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.e);
 
