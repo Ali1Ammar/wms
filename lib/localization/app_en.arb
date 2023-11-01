@@ -1,0 +1,13 @@
+{
+  "appTitle": "wms",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "unknownError": "Unknown Error",
+  "invalidCredentials": "Invalid Credentials",
+  "requiredField": "required field",
+  "enterEmailOrUsername": "Enter Email/Username",
+  "enterPassword": "Enter Password",
+  "loginTitle": "Log in",
+  "rememberMe": "Remember Me"
+}
