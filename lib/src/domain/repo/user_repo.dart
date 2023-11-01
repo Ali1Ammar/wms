@@ -1,6 +1,6 @@
 import 'package:wms/src/domain/entities/user.dart';
 
-abstract class UserRepo {
+abstract mixin class UserRepo {
   Future<List<User>> getUser();
   Future<User> createUser(User user);
   Future<User> updateUser(User user);

@@ -25,7 +25,7 @@ class TransactionModel extends Table {
 class UserModel extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text()();
-  TextColumn get userName => text()();
+  TextColumn get userName => text().unique()();
   TextColumn get password => text()();
   TextColumn get role => textEnum<Role>()();
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();

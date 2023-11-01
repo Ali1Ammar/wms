@@ -719,7 +719,9 @@ class $UserModelTable extends UserModel
   @override
   late final GeneratedColumn<String> userName = GeneratedColumn<String>(
       'user_name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
   static const VerificationMeta _passwordMeta =
       const VerificationMeta('password');
   @override
@@ -1105,6 +1107,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       DriftProductRepo(this as AppDatabase);
   late final DriftTransactionRepo driftTransactionRepo =
       DriftTransactionRepo(this as AppDatabase);
+  late final DriftUserRepo driftUserRepo = DriftUserRepo(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

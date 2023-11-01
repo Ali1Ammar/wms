@@ -9,12 +9,13 @@ import 'package:wms/src/domain/entities/role.dart';
 import 'package:wms/src/infrastructure/db/models.dart';
 import 'package:wms/src/infrastructure/repo/product_repo.dart';
 import 'package:wms/src/infrastructure/repo/transaction_repo.dart';
+import 'package:wms/src/infrastructure/repo/user_repo.dart';
 
 part 'database.g.dart';
 
 @DriftDatabase(
     tables: [ProductModel, TransactionModel, UserModel],
-    daos: [DriftProductRepo, DriftTransactionRepo])
+    daos: [DriftProductRepo, DriftTransactionRepo, DriftUserRepo])
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.e);
 
@@ -25,7 +26,7 @@ class AppDatabase extends _$AppDatabase {
 LazyDatabase openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'db.sqlite'));
+    final file = File(p.join(dbFolder.path, 'wms-db.sqlite'));
     return NativeDatabase.createInBackground(file);
   });
 }

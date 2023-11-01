@@ -2,11 +2,12 @@
   "cSpell.words": [
     "appbundle",
     "Cupertino",
+    "daos",
     "fluttergen",
     "fpdart",
-    "wms",
     "mocktail",
-    "riverpod"
+    "riverpod",
+    "wms"
   ],
   "cSpell.ignorePaths": [
     "package-lock.json",
