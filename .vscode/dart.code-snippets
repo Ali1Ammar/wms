@@ -32,5 +32,27 @@
       "}"
     ],
     "description": "create a consumer page with auto route config"
+  },
+  "async notifier": {
+    "scope": "dart",
+    "prefix": "asyncnotifier",
+    "body": [
+      "import 'dart:async';",
+      "",
+      "import 'package:riverpod/riverpod.dart';",
+      "import 'package:wms/src/domain/entities/entities.dart';",
+      "",
+      "final ${TM_FILENAME_BASE/(.*)/${1:/camelcase}/}Provider = AsyncNotifierProvider(ProductController.new);",
+      "",
+      "class ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/} extends AsyncNotifier<> {",
+      "  @override",
+      "  FutureOr build() {",
+      "    // TODO: implement build",
+      "    throw UnimplementedError();",
+      "  }",
+      "}",
+      ""
+    ],
+    "description": "create a async notifier provider"
   }
 }
