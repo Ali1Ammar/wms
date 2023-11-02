@@ -19,7 +19,7 @@ class NavbarPage extends StatelessWidget {
         routes: const [
           HomeRoute(),
           ProductRoute(),
-          WarehouseRoute(),
+          TransactionRoute(),
           SettingRoute(),
         ],
         builder: (context, child, controller) {
@@ -33,7 +33,7 @@ class NavbarPage extends StatelessWidget {
             final items = [
               (title: "Home", icon: Icons.home),
               (title: "Product", icon: Icons.badge),
-              (title: "Warehouse", icon: Icons.warehouse),
+              (title: "Transaction", icon: Icons.analytics),
               (title: "Setting", icon: Icons.settings),
             ];
             final color = Theme.of(context).colorScheme;

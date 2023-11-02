@@ -45,10 +45,10 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const SettingPage(),
       );
     },
-    WarehouseRoute.name: (routeData) {
+    TransactionRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const WarehousePage(),
+        child: const TransactionPage(),
       );
     },
   };
@@ -125,15 +125,15 @@ class SettingRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [WarehousePage]
-class WarehouseRoute extends PageRouteInfo<void> {
-  const WarehouseRoute({List<PageRouteInfo>? children})
+/// [TransactionPage]
+class TransactionRoute extends PageRouteInfo<void> {
+  const TransactionRoute({List<PageRouteInfo>? children})
       : super(
-          WarehouseRoute.name,
+          TransactionRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'WarehouseRoute';
+  static const String name = 'TransactionRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

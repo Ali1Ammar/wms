@@ -31,5 +31,11 @@
     "*.dart": "$(capture).g.dart, $(capture).freezed.dart, $(capture).gr.dart",
     "build.yaml": "build.*.yaml"
   },
-  "conventionalCommits.scopes": ["structure", "auth", "ui", "product"]
+  "conventionalCommits.scopes": [
+    "structure",
+    "auth",
+    "ui",
+    "product",
+    "transaction"
+  ]
 }

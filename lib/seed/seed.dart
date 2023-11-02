@@ -72,13 +72,14 @@ Future<void> seed(AppDatabase db) async {
       price: 10,
       date: DateTime.now(),
     )),
-    db.driftTransactionRepo.createTransaction(Transaction(
-      id: 5,
-      quantity: 10,
-      product: products[0],
-      price: 10,
-      date: DateTime.now(),
-    )),
+    for (var i = 1; i < 100; i++)
+      db.driftTransactionRepo.createTransaction(Transaction(
+        id: 5 + i,
+        quantity: 10,
+        product: products[0],
+        price: 10,
+        date: DateTime.now(),
+      )),
   ]);
 }
 

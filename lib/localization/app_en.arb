@@ -1,4 +1,5 @@
 {
+  "@@locale": "en",
   "appTitle": "wms",
   "@appTitle": {
     "description": "The title of the application"
@@ -19,5 +20,7 @@
   "currency": "IQD",
   "add": "Add",
   "cancel": "Cancel",
-  "addProduct": "Add Product"
+  "addProduct": "Add Product",
+  "transaction": "Transaction",
+  "date": "Date"
 }
