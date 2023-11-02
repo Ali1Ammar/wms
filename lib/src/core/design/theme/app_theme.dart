@@ -8,6 +8,7 @@ class AppTheme {
             colorScheme: ColorScheme.fromSeed(
                 seedColor: AppColor.primaryColor,
                 primary: AppColor.primaryColor,
+                secondary: AppColor.secondaryColor,
                 brightness: Brightness.light))
         .sharedCopyWith();
   }
@@ -18,6 +19,7 @@ class AppTheme {
             colorScheme: ColorScheme.fromSeed(
                 seedColor: AppColor.primaryColor,
                 primary: AppColor.primaryColor,
+                secondary: AppColor.secondaryColor,
                 brightness: Brightness.dark))
         .sharedCopyWith();
   }

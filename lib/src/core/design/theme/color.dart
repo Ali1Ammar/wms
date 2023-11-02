@@ -7,5 +7,6 @@ abstract class AppColor {
   static const greyBorder = Colors.black12;
   static const blackish = Colors.black87;
   static const midGrey = Colors.black54;
-  static const primaryColor = Color(0xffED3D61);
+  static const primaryColor = Color(0xfff26c6e);
+  static const secondaryColor = Color(0xff1e2938);
 }
