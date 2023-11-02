@@ -7,12 +7,9 @@ import 'package:wms/src/core/utils/log/riverpod_logger.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final providerContainer = ProviderContainer();
-  final asyncInit = await AsyncInit.init(providerContainer);
+  await providerContainer.read(asyncInitProvider).init();
   runApp(ProviderScope(
       parent: providerContainer,
-      overrides: [
-        asyncInitProvider.overrideWithValue(asyncInit),
-      ],
       observers: [RiverpodLogger()],
       child: const MyApp()));
 }
