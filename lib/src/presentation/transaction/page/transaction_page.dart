@@ -3,6 +3,7 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:wms/src/core/design/widget/custom_date_picker.dart';
 import 'package:wms/src/core/design/widget/table/column_label.dart';
 import 'package:wms/src/core/utils/extensions/extensions.dart';
 import 'package:wms/src/presentation/transaction/controller/transaction_source.dart';
@@ -27,15 +28,13 @@ class TransactionPage extends HookConsumerWidget {
       empty: const Text("no data"),
       showFirstLastButtons: true,
       actions: [
-        Text(productState.productId.toString()),
-        IconButton(
-            onPressed: () {
-              ref
-                  .read(transactionControllerProvider.notifier)
-                  .toggleProductId();
-              paginatorController.goToFirstPage();
-            },
-            icon: const Icon(Icons.filter_alt)),
+        CustomRangeDatePicker(
+          selected: productState.dateRange,
+          onResult: (val) {
+            ref.read(transactionControllerProvider.notifier).changeRange(val);
+            paginatorController.goToFirstPage();
+          },
+        ),
         IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
         IconButton(
             onPressed: () {

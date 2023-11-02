@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_date_range_picker/flutter_date_range_picker.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:wms/src/core/provider/repo.dart';
 import 'package:wms/src/domain/entities/entities.dart';
@@ -14,20 +15,22 @@ final transactionControllerProvider =
 class TransactionController extends Notifier<FilterData> {
   @override
   FilterData build() {
-    return (productId: null, startDate: null, endDate: null);
+    return (
+      productId: null,
+      dateRange: null,
+    );
   }
 
   Future<TransactionControllerState> getPaginated(int take, int skip) async {
-    return ref
-        .read(transactionRepoProvider)
-        .getTransactions(skip: skip, take: take, productId: state.productId);
+    return ref.read(transactionRepoProvider).getTransactions(
+        skip: skip,
+        take: take,
+        productId: state.productId,
+        startDate: state.dateRange?.start,
+        endDate: state.dateRange?.end);
   }
 
-  toggleProductId() {
-    if (state.productId == null) {
-      state = (startDate: null, endDate: null, productId: 2);
-    } else {
-      state = (startDate: null, endDate: null, productId: null);
-    }
+  changeRange(DateRange? range) {
+    state = (dateRange: range, productId: state.productId);
   }
 }

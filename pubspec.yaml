@@ -36,6 +36,7 @@ dependencies:
   data_table_2: ^2.5.8
   currency_text_input_formatter: ^2.1.10
   intl: ^0.18.1
+  flutter_date_range_picker: ^0.0.14
 
 dev_dependencies:
   flutter_test:
