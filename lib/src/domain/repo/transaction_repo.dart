@@ -1,7 +1,7 @@
 import 'package:wms/src/domain/entities/transaction.dart';
 
 abstract mixin class TransactionRepo {
-  Future<List<Transaction>> getTransactions(
+  Future<(List<Transaction>, int totalCount)> getTransactions(
       {DateTime? startDate,
       DateTime? endDate,
       int? productId,

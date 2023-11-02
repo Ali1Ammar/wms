@@ -28,7 +28,8 @@ LazyDatabase openConnection() {
 }
 
 Future<QueryExecutor> openDbInBackground() async {
-  return NativeDatabase.createInBackground(await getDbFile());
+  return NativeDatabase.createInBackground(await getDbFile(),
+      logStatements: true);
 }
 
 Future<File> getDbFile() async {

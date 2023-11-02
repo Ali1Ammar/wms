@@ -4,7 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:wms/src/core/design/theme/space.dart';
 import 'package:wms/src/core/design/widget/form/custom_field.dart';
 import 'package:wms/src/core/design/widget/form/money_field.dart';
-import 'package:wms/src/core/utils/extensions/context.dart';
 import 'package:wms/src/core/utils/extensions/extensions.dart';
 
 typedef AddProductResult = ({String name, String price, String quantity});

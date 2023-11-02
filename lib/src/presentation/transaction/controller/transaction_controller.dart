@@ -3,16 +3,31 @@ import 'dart:async';
 import 'package:riverpod/riverpod.dart';
 import 'package:wms/src/core/provider/repo.dart';
 import 'package:wms/src/domain/entities/entities.dart';
+import 'package:wms/src/presentation/transaction/state/filter_data.dart';
 
-typedef TransactionControllerState = List<Transaction>;
+typedef TransactionControllerState = (List<Transaction> data, int totalCount);
 
 final transactionControllerProvider =
-    AsyncNotifierProvider<TransactionController, TransactionControllerState>(
+    NotifierProvider<TransactionController, FilterData>(
         TransactionController.new);
 
-class TransactionController extends AsyncNotifier<TransactionControllerState> {
+class TransactionController extends Notifier<FilterData> {
   @override
-  FutureOr<TransactionControllerState> build() {
-    return ref.read(transactionRepoProvider).getTransactions(skip: 0, take: 50);
+  FilterData build() {
+    return (productId: null, startDate: null, endDate: null);
+  }
+
+  Future<TransactionControllerState> getPaginated(int take, int skip) async {
+    return ref
+        .read(transactionRepoProvider)
+        .getTransactions(skip: skip, take: take, productId: state.productId);
+  }
+
+  toggleProductId() {
+    if (state.productId == null) {
+      state = (startDate: null, endDate: null, productId: 2);
+    } else {
+      state = (startDate: null, endDate: null, productId: null);
+    }
   }
 }

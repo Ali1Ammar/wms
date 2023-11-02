@@ -72,7 +72,7 @@ Future<void> seed(AppDatabase db) async {
       price: 10,
       date: DateTime.now(),
     )),
-    for (var i = 1; i < 100; i++)
+    for (var i = 1; i < 10000; i++)
       db.driftTransactionRepo.createTransaction(Transaction(
         id: 5 + i,
         quantity: 10,
