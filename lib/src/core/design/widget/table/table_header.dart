@@ -9,6 +9,7 @@ class TableHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Theme.of(context).colorScheme.primaryContainer,
       child: Padding(
         padding: const EdgeInsets.all(AppSpace.small),
         child: OverflowBar(

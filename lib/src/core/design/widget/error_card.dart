@@ -35,7 +35,7 @@ class ErrorCard extends StatelessWidget {
                     Visibility.maintain(
                       visible: !isLoading,
                       //TODO
-                      child: Text(context.translator.unknownError),
+                      child: Text(context.translator.tryAgain),
                     ),
                   ],
                 )

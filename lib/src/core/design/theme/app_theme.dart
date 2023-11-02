@@ -9,6 +9,8 @@ class AppTheme {
                 seedColor: AppColor.primaryColor,
                 primary: AppColor.primaryColor,
                 secondary: AppColor.secondaryColor,
+                background: const Color.fromARGB(255, 245, 232, 232),
+                surface: const Color.fromARGB(255, 240, 229, 229),
                 brightness: Brightness.light))
         .sharedCopyWith();
   }

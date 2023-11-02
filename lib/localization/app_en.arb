@@ -9,5 +9,11 @@
   "enterEmailOrUsername": "Enter Email/Username",
   "enterPassword": "Enter Password",
   "loginTitle": "Log in",
-  "rememberMe": "Remember Me"
+  "rememberMe": "Remember Me",
+  "name": "Name",
+  "id": "Id",
+  "price": "Price",
+  "quantity": "Quantity",
+  "product": "Product",
+  "tryAgain": "Try Again"
 }
