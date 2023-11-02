@@ -83,6 +83,10 @@ Future<void> seed(AppDatabase db) async {
 }
 
 Future<void> deleteAll() async {
-  final dbFile = await getDbFile();
-  dbFile.deleteSync();
+  try {
+    final dbFile = await getDbFile();
+    dbFile.deleteSync();
+  } catch (e) {
+    //
+  }
 }

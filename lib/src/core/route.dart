@@ -2,7 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:wms/src/presentation/auth/page/login_page.dart';
 import 'package:wms/src/presentation/home/page/home_page.dart';
+import 'package:wms/src/presentation/product/page/product_page.dart';
+import 'package:wms/src/presentation/setting/page/setting_page.dart';
 import 'package:wms/src/presentation/shared/navbar/navbar_page.dart';
+import 'package:wms/src/presentation/warehouse/page/warehouse_page.dart';
 
 part 'route.gr.dart';
 
@@ -18,6 +21,9 @@ class AppRouter extends _$AppRouter {
     AutoRoute(page: LoginRoute.page, initial: true),
     AutoRoute(page: NavbarRoute.page, children: [
       AutoRoute(page: HomeRoute.page, initial: true),
+      AutoRoute(page: ProductRoute.page),
+      AutoRoute(page: WarehouseRoute.page),
+      AutoRoute(page: SettingRoute.page),
     ])
   ];
 }

@@ -33,6 +33,24 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const NavbarPage(),
       );
     },
+    ProductRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ProductPage(),
+      );
+    },
+    SettingRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SettingPage(),
+      );
+    },
+    WarehouseRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const WarehousePage(),
+      );
+    },
   };
 }
 
@@ -74,6 +92,48 @@ class NavbarRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'NavbarRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ProductPage]
+class ProductRoute extends PageRouteInfo<void> {
+  const ProductRoute({List<PageRouteInfo>? children})
+      : super(
+          ProductRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ProductRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [SettingPage]
+class SettingRoute extends PageRouteInfo<void> {
+  const SettingRoute({List<PageRouteInfo>? children})
+      : super(
+          SettingRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SettingRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [WarehousePage]
+class WarehouseRoute extends PageRouteInfo<void> {
+  const WarehouseRoute({List<PageRouteInfo>? children})
+      : super(
+          WarehouseRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'WarehouseRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

@@ -18,6 +18,9 @@ class NavbarPage extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         routes: const [
           HomeRoute(),
+          ProductRoute(),
+          WarehouseRoute(),
+          SettingRoute(),
         ],
         builder: (context, child, controller) {
           return Consumer(builder: (context, ref, _) {
