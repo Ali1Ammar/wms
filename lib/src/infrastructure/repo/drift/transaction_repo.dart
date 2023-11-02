@@ -22,7 +22,11 @@ class DriftTransactionRepo extends DatabaseAccessor<AppDatabase>
 
   @override
   Future<List<Transaction>> getTransactions(
-      {DateTime? startDate, DateTime? endDate, int? productId}) {
+      {DateTime? startDate,
+      DateTime? endDate,
+      int? productId,
+      required int skip,
+      required int take}) {
     var query = select(transactionModel).join([
       leftOuterJoin(
           productModel, productModel.id.equalsExp(transactionModel.productId))
@@ -38,6 +42,8 @@ class DriftTransactionRepo extends DatabaseAccessor<AppDatabase>
     if (productId != null) {
       query = query..where(transactionModel.productId.equals(productId));
     }
+
+    query.limit(take, offset: skip);
 
     return query.get().then((value) {
       return value

@@ -13,6 +13,6 @@ final transactionControllerProvider =
 class TransactionController extends AsyncNotifier<TransactionControllerState> {
   @override
   FutureOr<TransactionControllerState> build() {
-    return ref.read(transactionRepoProvider).getTransactions();
+    return ref.read(transactionRepoProvider).getTransactions(skip: 0, take: 50);
   }
 }
