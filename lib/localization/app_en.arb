@@ -15,5 +15,9 @@
   "price": "Price",
   "quantity": "Quantity",
   "product": "Product",
-  "tryAgain": "Try Again"
+  "tryAgain": "Try Again",
+  "currency": "IQD",
+  "add": "Add",
+  "cancel": "Cancel",
+  "addProduct": "Add Product"
 }

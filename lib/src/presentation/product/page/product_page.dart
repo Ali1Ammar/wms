@@ -1,4 +1,5 @@
 import 'package:auto_route/annotations.dart';
+import 'package:capped_progress_indicator/capped_progress_indicator.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:wms/src/core/design/widget/table/column_label.dart';
 import 'package:wms/src/core/design/widget/table/table_header.dart';
 import 'package:wms/src/core/utils/extensions/extensions.dart';
 import 'package:wms/src/presentation/product/controller/product_controller.dart';
+import 'package:wms/src/presentation/product/page/add_product.dart';
 import 'package:wms/src/presentation/shared/navbar/async_handler.dart';
 
 @RoutePage()
@@ -24,7 +26,23 @@ class ProductPage extends ConsumerWidget {
           return Column(
             children: [
               TableHeader(header: tr.product, action: [
-                IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
+                if (productState.isLoading)
+                  const CircularCappedProgressIndicator(
+                    strokeCap: StrokeCap.round,
+                  ),
+                IconButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) => AddProductDialog(
+                                onResult: (res) {
+                                  ref
+                                      .read(productControllerProvider.notifier)
+                                      .addProduct(res);
+                                },
+                              ));
+                    },
+                    icon: const Icon(Icons.add)),
                 IconButton(
                     onPressed: () {
                       ref.invalidate(productControllerProvider);

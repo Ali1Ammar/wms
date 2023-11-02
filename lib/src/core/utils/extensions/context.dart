@@ -4,4 +4,6 @@ extension ContextHelper on BuildContext {
   bool isTablet() {
     return MediaQuery.of(this).size.width > 600;
   }
+
+  Size get screenSize => MediaQuery.of(this).size;
 }
