@@ -36,6 +36,7 @@ class AddTransactionDialog extends HookWidget {
           children: [
             ProductSelector.fromValueNotifier(
               productSelector,
+              isExpanded: true,
             ),
             gap,
             MoneyField(

@@ -3,23 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:wms/src/core/design/animation/animated_hide.dart';
 import 'package:wms/src/core/design/theme/space.dart';
+import 'package:wms/src/core/utils/extensions/extensions.dart';
 import 'package:wms/src/domain/entities/product.dart';
 import 'package:wms/src/presentation/product/controller/product_controller.dart';
 
 class ProductSelector extends HookConsumerWidget {
   final Product? selectedProduct;
   final ValueChanged<Product?> onChanged;
-  factory ProductSelector.fromValueNotifier(
-    ValueNotifier<Product?> notifier,
-  ) {
-    return ProductSelector(
-      selectedProduct: notifier.value,
-      onChanged: (val) => notifier.value = val,
-    );
-  }
+  final bool isExpanded;
+
+  ProductSelector.fromValueNotifier(ValueNotifier<Product?> notifier,
+      {super.key, required this.isExpanded})
+      : selectedProduct = notifier.value,
+        onChanged = notifier.setterMethod();
 
   const ProductSelector(
-      {super.key, required this.selectedProduct, required this.onChanged});
+      {super.key,
+      required this.selectedProduct,
+      required this.onChanged,
+      required this.isExpanded});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final products = ref.watch(productControllerProvider);
@@ -28,7 +31,7 @@ class ProductSelector extends HookConsumerWidget {
       child: DropdownButtonHideUnderline(
         child: DropdownButton2<Product>(
           value: selectedProduct,
-          isExpanded: true,
+          isExpanded: isExpanded,
           buttonStyleData: ButtonStyleData(
             padding: const EdgeInsets.all(0),
             elevation: 0,

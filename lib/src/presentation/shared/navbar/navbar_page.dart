@@ -43,14 +43,19 @@ class NavbarPage extends StatelessWidget {
                   Visibility(
                     visible: isTable,
                     child: NavigationRail(
-                        leading: const Padding(
-                          padding: EdgeInsets.all(8),
-                          child: AppLogo(
-                            size: 90,
+                        leading: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: CircleAvatar(
+                            radius: 45,
+                            backgroundColor: color.onPrimary,
+                            child: const AppLogo(
+                              size: 90,
+                            ),
                           ),
                         ),
-                        backgroundColor: ElevationOverlay.applySurfaceTint(
-                            color.background, color.primary, 4),
+                        backgroundColor: color.primary,
+                        // ElevationOverlay.applySurfaceTint(
+                        //     color.background, color.primary, 10),
                         labelType: NavigationRailLabelType.all,
                         selectedIndex: tabsRouter.activeIndex,
                         onDestinationSelected: onChange,

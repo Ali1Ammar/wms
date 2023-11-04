@@ -31,6 +31,7 @@ class TransactionPage extends HookConsumerWidget {
       showFirstLastButtons: true,
       actions: [
         ProductSelector(
+            isExpanded: false,
             selectedProduct: productState.product,
             onChanged: (val) {
               ref
