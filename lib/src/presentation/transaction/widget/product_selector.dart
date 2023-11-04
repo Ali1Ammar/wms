@@ -9,6 +9,14 @@ import 'package:wms/src/presentation/product/controller/product_controller.dart'
 class ProductSelector extends HookConsumerWidget {
   final Product? selectedProduct;
   final ValueChanged<Product?> onChanged;
+  factory ProductSelector.fromValueNotifier(
+    ValueNotifier<Product?> notifier,
+  ) {
+    return ProductSelector(
+      selectedProduct: notifier.value,
+      onChanged: (val) => notifier.value = val,
+    );
+  }
 
   const ProductSelector(
       {super.key, required this.selectedProduct, required this.onChanged});
@@ -20,6 +28,7 @@ class ProductSelector extends HookConsumerWidget {
       child: DropdownButtonHideUnderline(
         child: DropdownButton2<Product>(
           value: selectedProduct,
+          isExpanded: true,
           buttonStyleData: ButtonStyleData(
             padding: const EdgeInsets.all(0),
             elevation: 0,

@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "wms",
+  "appTitle": "Flutter App",
   "@appTitle": {
     "description": "The title of the application"
   },
@@ -22,5 +22,6 @@
   "cancel": "Cancel",
   "addProduct": "Add Product",
   "transaction": "Transaction",
-  "date": "Date"
+  "date": "Date",
+  "addTransaction": "Add Transaction"
 }

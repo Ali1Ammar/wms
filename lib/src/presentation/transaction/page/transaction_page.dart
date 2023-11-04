@@ -8,6 +8,7 @@ import 'package:wms/src/core/design/widget/table/column_label.dart';
 import 'package:wms/src/core/utils/extensions/extensions.dart';
 import 'package:wms/src/presentation/transaction/controller/transaction_source.dart';
 import 'package:wms/src/presentation/transaction/controller/transaction_controller.dart';
+import 'package:wms/src/presentation/transaction/page/add_transaction.dart';
 import 'package:wms/src/presentation/transaction/widget/product_selector.dart';
 
 @RoutePage()
@@ -44,7 +45,19 @@ class TransactionPage extends HookConsumerWidget {
             paginatorController.goToFirstPage();
           },
         ),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
+        IconButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) => AddTransactionDialog(
+                        onResult: (res) {
+                          ref
+                              .read(transactionControllerProvider.notifier)
+                              .addTransaction(res);
+                        },
+                      ));
+            },
+            icon: const Icon(Icons.add)),
         IconButton(
             onPressed: () {
               ref.invalidate(transactionControllerProvider);
