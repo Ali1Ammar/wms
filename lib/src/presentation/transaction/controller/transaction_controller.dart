@@ -16,7 +16,7 @@ class TransactionController extends Notifier<FilterData> {
   @override
   FilterData build() {
     return (
-      productId: null,
+      product: null,
       dateRange: null,
     );
   }
@@ -25,12 +25,16 @@ class TransactionController extends Notifier<FilterData> {
     return ref.read(transactionRepoProvider).getTransactions(
         skip: skip,
         take: take,
-        productId: state.productId,
+        productId: state.product?.id,
         startDate: state.dateRange?.start,
         endDate: state.dateRange?.end);
   }
 
   changeRange(DateRange? range) {
-    state = (dateRange: range, productId: state.productId);
+    state = (dateRange: range, product: state.product);
+  }
+
+  changeProduct(Product? product) {
+    state = (dateRange: state.dateRange, product: product);
   }
 }

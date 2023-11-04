@@ -8,6 +8,7 @@ import 'package:wms/src/core/design/widget/table/column_label.dart';
 import 'package:wms/src/core/utils/extensions/extensions.dart';
 import 'package:wms/src/presentation/transaction/controller/transaction_source.dart';
 import 'package:wms/src/presentation/transaction/controller/transaction_controller.dart';
+import 'package:wms/src/presentation/transaction/widget/product_selector.dart';
 
 @RoutePage()
 class TransactionPage extends HookConsumerWidget {
@@ -28,6 +29,14 @@ class TransactionPage extends HookConsumerWidget {
       empty: const Text("no data"),
       showFirstLastButtons: true,
       actions: [
+        ProductSelector(
+            selectedProduct: productState.product,
+            onChanged: (val) {
+              ref
+                  .read(transactionControllerProvider.notifier)
+                  .changeProduct(val);
+              paginatorController.goToFirstPage();
+            }),
         CustomRangeDatePicker(
           selected: productState.dateRange,
           onResult: (val) {
